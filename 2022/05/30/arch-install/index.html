@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kyanch.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Installation guide   x86_64 UEFI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arch 基本系统的安装">
+<meta property="og:url" content="https://kyanch.github.io/2022/05/30/arch-install/index.html">
+<meta property="og:site_name" content="KyanCh Blog">
+<meta property="og:description" content="Installation guide   x86_64 UEFI">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-30T15:12:52.000Z">
+<meta property="article:modified_time" content="2022-06-03T11:10:53.340Z">
+<meta property="article:author" content="Kyan Chang">
+<meta property="article:tag" content="archlinux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://kyanch.github.io/2022/05/30/arch-install/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Arch 基本系统的安装 | KyanCh Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">KyanCh Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Just Record Sth</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://kyanch.github.io/2022/05/30/arch-install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Kyan Chang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KyanCh Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Arch 基本系统的安装
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-05-30 23:12:52" itemprop="dateCreated datePublished" datetime="2022-05-30T23:12:52+08:00">2022-05-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-03 19:10:53" itemprop="dateModified" datetime="2022-06-03T19:10:53+08:00">2022-06-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Installation_guide">Installation guide</a></p>
+</blockquote>
+<ul>
+<li><strong>x86_64</strong></li>
+<li><strong>UEFI</strong></li>
+</ul>
+<span id="more"></span>
+
+<h2 id="安装前准备"><a href="#安装前准备" class="headerlink" title="安装前准备"></a>安装前准备</h2><h3 id="启动LiveCD"><a href="#启动LiveCD" class="headerlink" title="启动LiveCD"></a>启动LiveCD</h3><h3 id="设置键盘布局"><a href="#设置键盘布局" class="headerlink" title="设置键盘布局"></a>设置键盘布局</h3><p>查看所有可用布局：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls /usr/share/kbd/keymaps/**/*.map.gz</span></span><br></pre></td></tr></table></figure>
+
+<p>在中国的话，默认的US布局是可以正常使用，无需更改<br>如果需要更改 使用 loadkeys 工具，键盘布局省略路径和文件后缀。比如设置德国键盘布局：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># loadkeys de-latin1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="确定启动模式"><a href="#确定启动模式" class="headerlink" title="确定启动模式"></a>确定启动模式</h3><p>本人以UEFI作为启动方式。如已确认支持UEFI，则可省略该步骤。</p>
+<p>如果该目录不存在，则不支持UEFI启动。请调整bios设置，或者更换主板。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls /sys/firmware/efi/efivars</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="连接网络"><a href="#连接网络" class="headerlink" title="连接网络"></a>连接网络</h3><p>archlinux的liveCD支持大多数的有线和无线网卡，而且工具完备。<br><em>注意:</em> archliunx官方更改了默认的wifi管理器，由原来的<code>netctl</code>改为了<code>iwd</code><br>这里简单介绍一下iwctl的基本用法</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ wctl <span class="comment">#进入软件内部界面</span></span><br><span class="line"><span class="comment">#列出支持wifi的设备 (注意命令提示符的改变)</span></span><br><span class="line">[iwd]<span class="comment"># device list</span></span><br><span class="line"><span class="comment">#扫描可用wifi, device为你的wifi设备名称(上个命令的结果)</span></span><br><span class="line">[iwd]<span class="comment"># station device scan </span></span><br><span class="line"><span class="comment">#获取可用wifi列表，device为你的wifi设备名称</span></span><br><span class="line">[iwd]<span class="comment"># station device get-networks</span></span><br><span class="line"><span class="comment">#链接到某个SSID。device为你的wifi设备名称，SSID为某个热点的名称</span></span><br><span class="line"><span class="comment">#	如果热点需要密码，该命令会提示你输入密码</span></span><br><span class="line">[iwd]<span class="comment"># station device connect SSID</span></span><br><span class="line"><span class="comment"># 如果你知道你的设备名，热点名，也可以直接用命令连接</span></span><br><span class="line">$ iwctl --passphrase passphrase station device connect SSID</span><br></pre></td></tr></table></figure>
+
+<h3 id="更新系统时钟"><a href="#更新系统时钟" class="headerlink" title="更新系统时钟"></a>更新系统时钟</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># timedatectl set-ntp true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="磁盘分区、格式化、挂载"><a href="#磁盘分区、格式化、挂载" class="headerlink" title="磁盘分区、格式化、挂载"></a>磁盘分区、格式化、挂载</h3><p><del>如果你的硬盘已有系统，并且想保留原有的系统，请先阅读<strong>多系统引导</strong>部分</del><br>按照自己的想法分区就好。<br>注意<strong>4k对齐</strong>和<strong>特殊功能分区</strong>(ESP分区)的格式(fat32)<br>磁盘分区使用 <code>fdisk</code>或<code>parted</code></p>
+<table>
+<thead>
+<tr>
+<th align="center">格式化</th>
+<th align="center">命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">extX(X&#x3D;2&#x2F;3&#x2F;4)</td>
+<td align="center">mkfs.extX</td>
+</tr>
+<tr>
+<td align="center">fat32</td>
+<td align="center">mkfs -t vfat</td>
+</tr>
+<tr>
+<td align="center">swap</td>
+<td align="center">mkswap(启用:swapon&#x2F;关闭:swapoff)</td>
+</tr>
+</tbody></table>
+<p>如果<strong>磁盘紧张</strong>的话可以参照这个，但是长期使用可能导致磁盘不足，如果只是学习用、虚拟机用则完全可以:</p>
+<table>
+<thead>
+<tr>
+<th align="center">挂载点</th>
+<th align="center">分区</th>
+<th align="center">用途</th>
+<th align="center">格式化类型</th>
+<th align="center">大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&#x2F;mnt&#x2F;boot</td>
+<td align="center">&#x2F;dev&#x2F;sdX1</td>
+<td align="center">EFI启动分区</td>
+<td align="center">FAT32</td>
+<td align="center">260MB</td>
+</tr>
+<tr>
+<td align="center">&#x2F;mnt</td>
+<td align="center">&#x2F;dev&#x2F;sdX2</td>
+<td align="center">根目录分区</td>
+<td align="center">EXT4</td>
+<td align="center">20GB</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FS=xfs</span><br><span class="line">device=<span class="string">&#x27;/dev/nvme1n1p3&#x27;</span></span><br><span class="line">boot=<span class="string">&#x27;/dev/nvme0n1p1&#x27;</span></span><br><span class="line">mkfs.<span class="variable">$FS</span> -f <span class="variable">$device</span></span><br><span class="line">mount <span class="variable">$device</span> /mnt</span><br><span class="line"><span class="built_in">mkdir</span> -p /mnt/boot/EFI </span><br><span class="line">mount <span class="variable">$boot</span> /mnt/boot/EFI</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="选择镜像"><a href="#选择镜像" class="headerlink" title="选择镜像"></a>选择镜像</h3><p>修改镜像列表文件</p>
+<p>直接修改iso内的源，安装时会自动覆盖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+
+<p>这里使用<strong>南京大学源</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Server = https://mirrors.nju.edu.cn/archlinux/$repo/os/$arch&#x27;</span> &gt;  /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+
+<p>镜像列表有非常多的镜像站点，但具体到个人使用时，建议只保留最快的一个到两个。</p>
+<p>使用<code>reflector</code>可以筛选出最快的镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reflector -c China -p http,https -f 5 --threads 5 &gt; /etc/pacman.d/mirrorslist</span><br></pre></td></tr></table></figure>
+
+<p>可以通过<code>rankmirrors</code>工具筛选出最快的镜像</p>
+<blockquote>
+<p>liveCD联网后会自动使用reflector选出最快的70个镜像。如果在其他环境则需要安装pacman-contrib 包</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将文件中的镜像站点进行测速并排序，取前两个</span></span><br><span class="line">rankmirrors -n 2 /etc/pacman.d/mirrorlist</span><br></pre></td></tr></table></figure>
+
+<p>更多细节参见: <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Mirrors">Mirrors</a></p>
+<h3 id="安装必要的包"><a href="#安装必要的包" class="headerlink" title="安装必要的包"></a>安装必要的包</h3><p><strong>注意：</strong>这里安装的包都是官方源中的包，也就是说你可以之后用pacman安装这里的可选包，也可以将自己要用的包加入这个命令中。</p>
+<p><strong>事实上：</strong> pacstrap只是把软件包安装到另外一个目录中</p>
+<p>如果你不想看这部分下面的文字，直接运行这个命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pacstrap /mnt base linux linux-firmware</span></span><br></pre></td></tr></table></figure>
+
+<p>其中<code> /mnt</code>是根分区挂载的路径<br><code>base</code>  是必须的组包<br>另外内核包也必须有至少一个:</p>
+<ul>
+<li><code>linux</code>  是内核包</li>
+<li><code>linux-lts</code> 是长期支持内核包</li>
+</ul>
+<p>考虑稳定性 可以使用长期支持版本的内核包(<code>linux-lts</code>)，追求新版本可以用<code>linux</code>包。</p>
+<p><code>linux-firmware</code> 是驱动包 。如果使用WiFi作为主要的网络链接方式，则强烈建议安装此包，除非你确定内核对你的网卡有相应的驱动。<br><code>base-devel</code>  是基本开发工具包组，可以不装。包含的工具可以查看<a target="_blank" rel="noopener" href="https://archlinux.org/groups/x86_64/base-devel/">这里</a></p>
+<p>理论上你可以在此写上任何源里有的包，但是考虑安装的速度，先把基本系统安装之后，再根据需要使用包管理器安装。</p>
+<p>我自己使用的命令是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pacstrap /mnt base base-devel linux linux-firmware neovim git</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置系统"><a href="#配置系统" class="headerlink" title="配置系统"></a>配置系统</h2><h3 id="更新fstab"><a href="#更新fstab" class="headerlink" title="更新fstab"></a>更新fstab</h3><ul>
+<li><p>-U 使用UUID</p>
+</li>
+<li><p>-L 使用label</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</span></span><br></pre></td></tr></table></figure>
+
+<p>检查一下&#x2F;mnt&#x2F;etc&#x2F;fstab是否已有相应内容</p>
+<h3 id="Chroot"><a href="#Chroot" class="headerlink" title="Chroot"></a>Chroot</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arch-chroot /mnt</span></span><br></pre></td></tr></table></figure>
+
+<p>建议在chroot之后立即<strong>安装</strong>的包</p>
+<ul>
+<li>vim (或者其他文本编辑器)</li>
+<li>iwd</li>
+</ul>
+<h3 id="本地化"><a href="#本地化" class="headerlink" title="本地化"></a>本地化</h3><p><strong>时区设置</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ln -sf /usr/share/zoneinfo/Region/City /etc/localtime</span></span><br></pre></td></tr></table></figure>
+
+<p>常用的中国(+8)时区(亚洲-上海)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>调整时间</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># hwclock --systohc</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>语言设置</strong><br>编辑 <code>/etc/locale.gen</code>文件，去掉<code>en_US.UTF-8 UTF-8</code>那行的注释和你想要使用的语言(简体中文是<code>zh_CN.UTF-8 UTF-8</code>)的注释:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.....</span><br><span class="line"><span class="comment">#en_US.UTF-8 UTF-8</span></span><br><span class="line">.....</span><br><span class="line"><span class="comment">#zh_CN.UTF-8 UTF-8</span></span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
+
+<p>改成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.....</span><br><span class="line">en_US.UTF-8 UTF-8</span><br><span class="line">.....</span><br><span class="line">zh_CN.UTF-8 UTF-8</span><br><span class="line">.....</span><br></pre></td></tr></table></figure>
+<p>使用下面的命令快速实现修改</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i  <span class="string">&#x27;s/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/&#x27;</span> /etc/locale.gen</span><br><span class="line">sed -i  <span class="string">&#x27;s/^#zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/&#x27;</span> /etc/locale.gen</span><br></pre></td></tr></table></figure>
+
+<p>然后运行以下程序使更改生效：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># locale-gen</span></span><br></pre></td></tr></table></figure>
+
+<p>创建&#x2F;etc&#x2F;locale.conf文件并写入<code>LANG</code>环境变量的值</p>
+<table>
+<thead>
+<tr>
+<th align="left">&#x2F;etc&#x2F;locale.conf</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">LANG&#x3D;en_US.UTF-8</td>
+</tr>
+</tbody></table>
+<p> 如果你改变了键盘布局，那么还需要写入这个文件以永久保存设置(没改就不用) </p>
+<table>
+<thead>
+<tr>
+<th align="left">&#x2F;etc&#x2F;vconsole.conf</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">KEYMAP&#x3D;de-latin1</td>
+</tr>
+</tbody></table>
+<h3 id="网络配置-可选"><a href="#网络配置-可选" class="headerlink" title="网络配置(可选)"></a>网络配置(可选)</h3><p> <strong>主机名设置</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">&#x2F;etc&#x2F;hostname</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">myhostname</td>
+</tr>
+</tbody></table>
+<p><strong>hosts设置</strong> </p>
+<table>
+<thead>
+<tr>
+<th align="left">&#x2F;etc&#x2F;hosts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">127.0.0.1	localhost</td>
+</tr>
+<tr>
+<td align="left">::1		        localhost</td>
+</tr>
+</tbody></table>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;LANG=en_US.UTF-8&#x27;</span> &gt;/etc/locale.conf</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;KC-WSA&#x27;</span> &gt; /etc/hostname</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&#x27;127.0.0.1 localhost\n::1 localhost&#x27;</span> &gt;&gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装microcode"><a href="#安装microcode" class="headerlink" title="安装microcode"></a>安装microcode</h3><p>关于microcode详细介绍请查看wiki: <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Microcode#Enabling_Intel_Microcode_Updates">MicroCode</a><br>如果是intel的CPU则执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pacman -S intel-ucode</span></span><br></pre></td></tr></table></figure>
+
+<p>如果是amd的CPU则执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># pacman -S amd-ucode</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="系统引导"><a href="#系统引导" class="headerlink" title="系统引导"></a>系统引导</h3><p>系统引导有相当多的工具，参见 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/Arch_boot_process#Boot_loader">Boot loader</a><br>本人使用的是GRUB，在此记录详细过程<br>再次强调:<strong>UEFI</strong> 启动方式<br>如果想装双系统，请先阅读 <strong>多系统引导UEFI</strong> 操作本节的命令</p>
+<ol>
+<li>安装 <code>grub</code> <code>efibootmgr</code> 和<code>os-prober</code>(用于探测其他系统(windows)引导，可选)</li>
+<li>挂载efi分区</li>
+<li>执行下面的命令。<ul>
+<li><code> esp</code>是挂载efi分区的目录(按照我的目录分区那一节操作的话，是<code>/boot</code>).</li>
+<li><code>GRUB</code>是该引导的ID，可以用任意值替代，之后更改BIOS启动项时会看到这个ID(本人使用GRUB-ARCH)</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># grub-install --target=x86_64-efi --efi-directory=esp --bootloader-id=GRUB</span></span><br><span class="line"><span class="comment"># os-prober  #需要挂载windows启动分区</span></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line"><span class="comment"># sed -i &#x27;s/^#GRUB_DISABLE_OS_PROBER=false/GRUB_DISABLE_OS_PROBER=false/&#x27; /etc/default/grub</span></span><br><span class="line"><span class="comment"># grub-mkconfig -o /boot/grub/grub.cfg</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>这个时候系统已经基本能够使用了，但我们还需要做一些简单配置。</p>
+<h3 id="基本软件的安装"><a href="#基本软件的安装" class="headerlink" title="基本软件的安装"></a>基本软件的安装</h3><p>ArchLinux的安装镜像内含了丰富的网络支持，然而我们新安装的系统显然并没有这样的条件。所以我们需要 <del>沾着安装镜像的光</del> 把常用的软件安装好。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pacman -S archlinux-keyring git wget unzip neovim networkmanager \</span><br><span class="line">	zsh grml-zsh-config zsh-completions zsh-syntax-highlighting \</span><br><span class="line">	zsh-autosuggestions zsh-history-substring-search \</span><br><span class="line">  plasma  sddm  rp-pppoe wireguard-tools nm-connection-editor flatpak\</span><br><span class="line">  konsole dolphin ark spectacle gwenview filelight \</span><br><span class="line">  nvidia nvidia-settings \</span><br><span class="line">  fcitx5-im fcitx5-rime wqy-microhei </span><br><span class="line">pacman -S packagekit-qt5 --asdeps</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建一个普通用户"><a href="#创建一个普通用户" class="headerlink" title="创建一个普通用户"></a>创建一个普通用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useradd -m -G wheel  [用户名]</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你想指定默认的shell，则用下面的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># useradd -m -G wheel  -s [shell绝对路径] [用户名]</span></span><br></pre></td></tr></table></figure>
+
+<p>还有别忘了设置密码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># passwd  #root用户密码</span></span><br><span class="line"><span class="comment"># passwd [用户名] #刚创建的用户密码</span></span><br></pre></td></tr></table></figure>
+
+<p>别忘了添加sudoer权限</p>
+<p><code>vim /etc/sudoers</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="comment"># %wheel ALL=(ALL) ALL</span></span><br><span class="line">...</span><br><span class="line"><span class="comment"># %wheel ALL=(ALL) NOPASSWD: ALL</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>两个取消注释其中一个即可。</p>
+<p>第一个使用sudo时需要密码，第二个不需要密码</p>
+<h2 id="善后"><a href="#善后" class="headerlink" title="善后"></a>善后</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="built_in">enable</span> sddm </span><br><span class="line">systemctl <span class="built_in">enable</span> NetworkManager</span><br></pre></td></tr></table></figure>
+<p>基本系统的安装就完成了。</p>
+<p>卸载所有相关分区然后重启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># umount -R /mnt</span></span><br><span class="line"><span class="comment"># reboot</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="KDE配置"><a href="#KDE配置" class="headerlink" title="KDE配置"></a>KDE配置</h2><h3 id="nvidia驱动"><a href="#nvidia驱动" class="headerlink" title="nvidia驱动"></a>nvidia驱动</h3><ol>
+<li><p><code>/etc/default/grub</code> grub内加内核参数 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRUB_CMDLINE_LINUX_DEFAULT=<span class="string">&quot;nvidia-drm.modeset=1 loglevel=3 quiet&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>/etc/X11/xorg.conf.d/10-nvidia-drm-outputclass.conf</code>内写入内容</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Section <span class="string">&quot;OutputClass&quot;</span></span><br><span class="line">    Identifier <span class="string">&quot;intel&quot;</span></span><br><span class="line">    MatchDriver <span class="string">&quot;i915&quot;</span></span><br><span class="line">    Driver <span class="string">&quot;modesetting&quot;</span></span><br><span class="line">EndSection</span><br><span class="line"></span><br><span class="line">Section <span class="string">&quot;OutputClass&quot;</span></span><br><span class="line">    Identifier <span class="string">&quot;nvidia&quot;</span></span><br><span class="line">    MatchDriver <span class="string">&quot;nvidia-drm&quot;</span></span><br><span class="line">    Driver <span class="string">&quot;nvidia&quot;</span></span><br><span class="line">    Option <span class="string">&quot;AllowEmptyInitialConfiguration&quot;</span></span><br><span class="line">    Option <span class="string">&quot;PrimaryGPU&quot;</span> <span class="string">&quot;yes&quot;</span></span><br><span class="line">    ModulePath <span class="string">&quot;/usr/lib/nvidia/xorg&quot;</span></span><br><span class="line">    ModulePath <span class="string">&quot;/usr/lib/xorg/modules&quot;</span></span><br><span class="line">EndSection</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>/usr/share/sddm/scripts/Xsetup</code>写入内容</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># nvidia-optimus 只使用nvidia显卡</span></span><br><span class="line">xrandr --setprovideroutputsource modesetting NVIDIA-0</span><br><span class="line">xrandr --auto</span><br><span class="line"><span class="comment"># 多显示器重叠显示(所有显示器上显示相同的sddm界面，而不是只显示在一个显示器上)</span></span><br><span class="line"><span class="keyword">for</span> next <span class="keyword">in</span> $(xrandr --listmonitors | grep -E <span class="string">&quot; *[0-9]+:.*&quot;</span> | <span class="built_in">cut</span> -d<span class="string">&quot; &quot;</span> -f6); <span class="keyword">do</span></span><br><span class="line">  [ -z <span class="string">&quot;<span class="variable">$current</span>&quot;</span> ] &amp;&amp; current=<span class="variable">$next</span> &amp;&amp; <span class="built_in">continue</span></span><br><span class="line">  xrandr --output <span class="variable">$current</span> --auto --output <span class="variable">$next</span> --auto --right-of <span class="variable">$current</span></span><br><span class="line">  current=<span class="variable">$next</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/archlinux/" rel="tag"># archlinux</a>
+          </div>
+
+        
+
+
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">安装前准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8LiveCD"><span class="nav-number">1.1.</span> <span class="nav-text">启动LiveCD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%94%AE%E7%9B%98%E5%B8%83%E5%B1%80"><span class="nav-number">1.2.</span> <span class="nav-text">设置键盘布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E5%90%AF%E5%8A%A8%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">确定启动模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">1.4.</span> <span class="nav-text">连接网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%92%9F"><span class="nav-number">1.5.</span> <span class="nav-text">更新系统时钟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E3%80%81%E6%A0%BC%E5%BC%8F%E5%8C%96%E3%80%81%E6%8C%82%E8%BD%BD"><span class="nav-number">1.6.</span> <span class="nav-text">磁盘分区、格式化、挂载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E9%95%9C%E5%83%8F"><span class="nav-number">2.1.</span> <span class="nav-text">选择镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%BF%85%E8%A6%81%E7%9A%84%E5%8C%85"><span class="nav-number">2.2.</span> <span class="nav-text">安装必要的包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">配置系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0fstab"><span class="nav-number">3.1.</span> <span class="nav-text">更新fstab</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chroot"><span class="nav-number">3.2.</span> <span class="nav-text">Chroot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%8C%96"><span class="nav-number">3.3.</span> <span class="nav-text">本地化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE-%E5%8F%AF%E9%80%89"><span class="nav-number">3.4.</span> <span class="nav-text">网络配置(可选)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85microcode"><span class="nav-number">3.5.</span> <span class="nav-text">安装microcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%BC%95%E5%AF%BC"><span class="nav-number">3.6.</span> <span class="nav-text">系统引导</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">4.1.</span> <span class="nav-text">基本软件的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7"><span class="nav-number">4.2.</span> <span class="nav-text">创建一个普通用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%96%84%E5%90%8E"><span class="nav-number">5.</span> <span class="nav-text">善后</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KDE%E9%85%8D%E7%BD%AE"><span class="nav-number">6.</span> <span class="nav-text">KDE配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#nvidia%E9%A9%B1%E5%8A%A8"><span class="nav-number">6.1.</span> <span class="nav-text">nvidia驱动</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Kyan Chang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kyan Chang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
